@@ -6,6 +6,9 @@ author:              "Christos Dimitroulas"
 maintainer:          "c.dimitroulas@gmail.com"
 copyright:           "2021 Christos Dimitroulas"
 
+data-files:
+  - data/*.*
+
 ghc-options:
   - -Wall
   - -Werror
@@ -19,26 +22,29 @@ ghc-options:
 extra-source-files:
 - README.md
 
-# To avoid duplicated efforts in documentation and dealing with the
-# complications of embedding Haddock markup inside cabal files, it is
-# common to point users to the README.md file.
-description:         Please see the README on GitHub at <https://github.com/githubuser/advent-of-code2021#readme>
-
 dependencies:
 - base >= 4.7 && < 5
 
 library:
-  source-dirs: lib
+  source-dirs: src
+  # dependencies:
+  #   - text
 
-executables:
-  day1:
-    source-dirs: src/day1
-    main: Main.hs
+# executables:
+#   day1:
+#     source-dirs: src/day1
+#     main: Main.hs
+#     dependencies:
+#       - sydtest >= 0.2.0.0
 
 tests:
-  day1-test:
-    source-dirs: test/day1
-    main: Test.hs
+  advent-of-code-tests:
+    source-dirs: test
+    main: Spec.hs
+    ghc-options:
+      - -threaded
+      - -rtsopts
+      - -with-rtsopts=-N
     dependencies:
-      - day1
-      - sydtest >= 0.6.0.0
+      - advent-of-code2021
+      - sydtest
