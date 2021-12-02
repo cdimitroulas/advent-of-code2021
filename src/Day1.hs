@@ -5,25 +5,23 @@ dataFilePath = "data/day1.txt"
 
 -- Part One
 getDepthIncreases :: [Int] -> Int
-getDepthIncreases [] = 0
-getDepthIncreases [_] = 0
-getDepthIncreases depths =
-  foldl
-    (\total (d1, d2) -> if d2 > d1 then total + 1 else total)
-    0
-    depthPairs
-  where
-    depthPairs = zip depths (drop 1 depths)
+getDepthIncreases = getDepthIncreasesN 1
 
 -- Part Two
 -- This time we need to look at groups of three values instead of individual values like in
 -- part 1
-getTripleSums :: [Int] -> [Int]
-getTripleSums depths@(d1 : d2 : d3 : _) = (d1 + d2 + d3) : getTripleSums (tail depths)
-getTripleSums _ = []
 
 getDepthIncreases' :: [Int] -> Int
-getDepthIncreases' = getDepthIncreases . getTripleSums
+getDepthIncreases' = getDepthIncreasesN 3
+
+-- Justin Le interestingly points out that part 2 can be solved in the exact same way as part 1
+-- except that we drop 3 instead of 1.
+-- "We can check that items three positions apart are increasing because for each window the
+-- sum of the window is increasing if the new item gained is bigger than the item that was just
+-- lost
+
+getDepthIncreasesN :: Int -> [Int] -> Int
+getDepthIncreasesN n depths = length $ filter (== True) $ zipWith (<) depths (drop n depths)
 
 main :: IO ()
 main = do
