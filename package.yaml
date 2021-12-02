@@ -1,0 +1,44 @@
+name:                advent-of-code2021
+version:             0.1.0.0
+github:              "githubuser/advent-of-code2021"
+license:             BSD3
+author:              "Christos Dimitroulas"
+maintainer:          "c.dimitroulas@gmail.com"
+copyright:           "2021 Christos Dimitroulas"
+
+ghc-options:
+  - -Wall
+  - -Werror
+  - -Wcompat
+  - -Widentities
+  - -Wincomplete-uni-patterns
+  - -Wincomplete-record-updates
+  - -Wno-unused-top-binds
+  - -Wno-orphans
+
+extra-source-files:
+- README.md
+
+# To avoid duplicated efforts in documentation and dealing with the
+# complications of embedding Haddock markup inside cabal files, it is
+# common to point users to the README.md file.
+description:         Please see the README on GitHub at <https://github.com/githubuser/advent-of-code2021#readme>
+
+dependencies:
+- base >= 4.7 && < 5
+
+library:
+  source-dirs: lib
+
+executables:
+  day1:
+    source-dirs: src/day1
+    main: Main.hs
+
+tests:
+  day1-test:
+    source-dirs: test/day1
+    main: Test.hs
+    dependencies:
+      - day1
+      - sydtest >= 0.6.0.0
