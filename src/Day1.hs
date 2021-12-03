@@ -1,5 +1,7 @@
 module Day1 where
 
+import           Common
+
 dataFilePath :: String
 dataFilePath = "data/day1.txt"
 
@@ -27,7 +29,7 @@ getDepthIncreasesN n depths = length $ filter (== True) $ zipWith (<) depths (dr
 
 main :: IO ()
 main = do
-  depths <- map read . lines <$> readFile dataFilePath
+  depths <- readFileLines dataFilePath
   putStrLn "Part One:"
   print (getDepthIncreases depths)
 
