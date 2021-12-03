@@ -18,7 +18,9 @@ getDepthIncreases' = getDepthIncreasesN 3
 -- except that we drop 3 instead of 1.
 -- "We can check that items three positions apart are increasing because for each window the
 -- sum of the window is increasing if the new item gained is bigger than the item that was just
--- lost
+-- lost"
+--
+-- This leads to a generalized function which can work for both part 1 and 2:
 
 getDepthIncreasesN :: Int -> [Int] -> Int
 getDepthIncreasesN n depths = length $ filter (== True) $ zipWith (<) depths (drop n depths)
