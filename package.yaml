@@ -40,6 +40,7 @@ library:
 tests:
   advent-of-code-tests:
     source-dirs: test
+    build-tools: sydtest-discover
     main: Spec.hs
     ghc-options:
       - -threaded

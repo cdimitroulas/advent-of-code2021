@@ -1,6 +1,1 @@
-import           Test.Day1
-import           Test.Syd  (sydTest)
-
-main :: IO ()
-main = do
-  sydTest day1Spec
+{-# OPTIONS_GHC -F -pgmF sydtest-discover #-}

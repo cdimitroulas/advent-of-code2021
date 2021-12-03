@@ -19,6 +19,7 @@ extra-source-files:
 data-files:
     data/day1-example.txt
     data/day1.txt
+    data/day2-example.txt
 
 source-repository head
   type: git
@@ -26,7 +27,10 @@ source-repository head
 
 library
   exposed-modules:
-      Day1
+      AOC
+      AOC.Common
+      AOC.Day1
+      AOC.Day2
   other-modules:
       Paths_advent_of_code2021
   hs-source-dirs:
@@ -40,11 +44,14 @@ test-suite advent-of-code-tests
   type: exitcode-stdio-1.0
   main-is: Spec.hs
   other-modules:
-      Test.Day1
+      AOC.Day1Spec
+      AOC.Day2Spec
       Paths_advent_of_code2021
   hs-source-dirs:
       test
   ghc-options: -Wall -Werror -Wcompat -Widentities -Wincomplete-uni-patterns -Wincomplete-record-updates -Wno-unused-top-binds -Wno-orphans -threaded -rtsopts -with-rtsopts=-N
+  build-tool-depends:
+      sydtest-discover:sydtest-discover
   build-depends:
       advent-of-code2021
     , base >=4.7 && <5

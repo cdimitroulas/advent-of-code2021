@@ -1,13 +1,13 @@
-module Test.Day1 where
+module AOC.Day1Spec (spec) where
 
-import           Day1
+import           AOC.Day1
 import           Test.Syd
 
 exampleDataFilePath :: String
 exampleDataFilePath = "data/day1-example.txt"
 
-day1Spec :: Spec
-day1Spec = do
+spec :: Spec
+spec = do
   depths <- runIO $ map read . lines <$> readFile exampleDataFilePath
 
   describe "getDepthIncreases" $ do

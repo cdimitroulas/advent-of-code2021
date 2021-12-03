@@ -1,6 +1,6 @@
-module Day1 where
+module AOC.Day1 where
 
-import           Common
+import           AOC.Common
 
 dataFilePath :: String
 dataFilePath = "data/day1.txt"
