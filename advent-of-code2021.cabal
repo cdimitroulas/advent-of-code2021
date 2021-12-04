@@ -31,6 +31,7 @@ source-repository head
 library
   exposed-modules:
       AOC
+      AOC.Binary
       AOC.Common
       AOC.Day1
       AOC.Day2
@@ -50,6 +51,7 @@ test-suite advent-of-code-tests
   type: exitcode-stdio-1.0
   main-is: Spec.hs
   other-modules:
+      AOC.BinarySpec
       AOC.Day1Spec
       AOC.Day2Spec
       AOC.Day3Spec

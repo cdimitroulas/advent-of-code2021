@@ -1,47 +1,13 @@
 {-# LANGUAGE RecordWildCards #-}
 
-module AOC.Day3 (parseBinary, binToDecimal, calcPowerConsumption, calcLifeSupportRating) where
+module AOC.Day3 (calcPowerConsumption, calcLifeSupportRating) where
 
+import           AOC.Binary    (Binary, Bit (..))
+import qualified AOC.Binary    as B
 import           AOC.Common
 import qualified AOC.Matrix    as Matrix
 import           Data.Foldable (foldl')
 import           Data.Maybe    (fromMaybe)
-
-data Bit = Zero | One deriving (Eq)
-
-type Binary = [Bit]
-
-instance Show Bit where
-  show Zero = "0"
-  show One  = "1"
-
-instance Ord Bit where
-  Zero <= One = True
-  Zero <= Zero = True
-  One <= Zero = False
-  One <= One = True
-
-bitToInteger :: Bit -> Int
-bitToInteger Zero = 0
-bitToInteger One  = 1
-
-flipBit :: Bit -> Bit
-flipBit Zero = One
-flipBit One  = Zero
-
-parseBit :: Char -> Maybe Bit
-parseBit '0' = Just Zero
-parseBit '1' = Just One
-parseBit _   = Nothing
-
-parseBinary :: String -> Maybe Binary
-parseBinary = mapM parseBit
-
-binToDecimal :: Binary -> Int
-binToDecimal binary = fst (foldl' addBit (0, 0) (reverse binary))
-  where
-    addBit :: (Int, Int) -> Bit -> (Int, Int)
-    addBit (decimal, e) bitVal = (decimal + (2 ^ e * bitToInteger bitVal), e + 1)
 
 data BitCounter = BitCounter {bitCountZero :: Int, bitCountOne :: Int} deriving (Show)
 
@@ -71,10 +37,10 @@ getGammaRate :: [Binary] -> Binary
 getGammaRate = map mostCommonBit . Matrix.invert
 
 calcPowerConsumption :: [Binary] -> Int
-calcPowerConsumption binaries = binToDecimal gammaRate * binToDecimal epsilonRate
+calcPowerConsumption binaries = B.binToDecimal gammaRate * B.binToDecimal epsilonRate
   where
     gammaRate = getGammaRate binaries
-    epsilonRate = map flipBit gammaRate
+    epsilonRate = map B.flipBit gammaRate
 
 -- Given a list of binaries, returns the most common bit in a particular position.
 -- For example, for position 0 it would look at all the first bits in all the binaries.
@@ -104,14 +70,14 @@ getCO2ScrubberRating = run 0
           bins
 
 calcLifeSupportRating :: [Binary] -> Int
-calcLifeSupportRating binaries = binToDecimal oxygenGenRating * binToDecimal co2ScrubberRating
+calcLifeSupportRating binaries = B.binToDecimal oxygenGenRating * B.binToDecimal co2ScrubberRating
   where
     oxygenGenRating = getOxygenGenRating binaries
     co2ScrubberRating = getCO2ScrubberRating binaries
 
 main :: IO ()
 main = do
-  binaries <- fromMaybe [] <$> parseFileLines parseBinary "data/day3.txt"
+  binaries <- fromMaybe [] <$> parseFileLines B.parseBinary "data/day3.txt"
 
   putStrLn "Part one:"
   print $ calcPowerConsumption binaries
