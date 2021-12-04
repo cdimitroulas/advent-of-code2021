@@ -1,4 +1,6 @@
-module AOC.Day2 (Position(..), parseCommands, runCommands) where
+{-# LANGUAGE RecordWildCards #-}
+
+module AOC.Day2 (Position(..), parseCommands, runCommands, runCommands', PositionWithAim(..)) where
 
 import           AOC.Common
 import           Data.Foldable (foldl')
@@ -35,6 +37,22 @@ parseCommands = mapM parseCommand
 runCommands :: [Command] -> Position
 runCommands = foldl' movePosition initialPosition
 
+data PositionWithAim = PositionWithAim { posHorizontal' :: Int, posDepth' :: Int, posAim :: Int } deriving (Eq, Show)
+
+initialPositionWithAim :: PositionWithAim
+initialPositionWithAim = PositionWithAim 0 0 0
+
+movePositionWithAim :: PositionWithAim -> Command -> PositionWithAim
+movePositionWithAim PositionWithAim {..} (Forward, amt) =
+    PositionWithAim (posHorizontal' + amt) (posDepth' + posAim * amt) posAim
+movePositionWithAim PositionWithAim {..} (Down, amt) =
+    PositionWithAim posHorizontal' posDepth' (posAim + amt)
+movePositionWithAim PositionWithAim {..} (Up, amt) =
+    PositionWithAim posHorizontal' posDepth' (posAim - amt)
+
+runCommands' :: [Command] -> PositionWithAim
+runCommands' = foldl' movePositionWithAim initialPositionWithAim
+
 main :: IO ()
 main = do
   putStrLn "Part one:"
@@ -42,3 +60,8 @@ main = do
   let finalPosition = runCommands $ fromMaybe [] commands
   print finalPosition
   print $ posHorizontal finalPosition * posDepth finalPosition
+
+  putStrLn "Part two:"
+  let finalPositionPart2 = runCommands' $ fromMaybe [] commands
+  print finalPositionPart2
+  print $ posHorizontal' finalPositionPart2 * posDepth' finalPositionPart2
