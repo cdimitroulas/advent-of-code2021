@@ -47,27 +47,33 @@ calcPowerConsumption binaries = B.binToDecimal gammaRate * B.binToDecimal epsilo
 mostCommonBitInPosition :: Int -> [Binary] -> Bit
 mostCommonBitInPosition pos = mostCommonBit . Matrix.getCol pos
 
+data Criteria = MostCommon | LeastCommon
+
+-- Generalized function which can be used for both oxygen generator rating and CO2 scrubber
+-- rating
+getRating :: Criteria -> [Binary] -> Binary
+getRating criteria = run 0
+  where
+    comparator = case criteria of
+                   MostCommon  -> (==)
+                   LeastCommon -> (/=)
+
+    run _ [binary] = binary
+    run position bins =
+      run (position + 1) $
+        filter (comparator (mostCommonBitInPosition position bins) . (!! position)) bins
+
+
 -- We need to filter the numbers by whichever bit is most common in each column
 -- In order to do so we need to increment the position of the bit we are inspecting in each
 -- binary each time we loop
 getOxygenGenRating :: [Binary] -> Binary
-getOxygenGenRating = run 0
-  where
-    run _ [binary] = binary
-    run position bins =
-      run (position + 1) $
-        filter ((== mostCommonBitInPosition position bins) . (!! position)) bins
+getOxygenGenRating = getRating MostCommon
 
 -- getCO2ScrubberRating is the same as getOxygenGenRating except that we look for the least
 -- common bit in each column (/= mostCommonBitVal)
 getCO2ScrubberRating :: [Binary] -> Binary
-getCO2ScrubberRating = run 0
-  where
-    run _ [binary] = binary
-    run position bins =
-      run (position + 1) $
-        filter ((/= mostCommonBitInPosition position bins) . (!! position))
-          bins
+getCO2ScrubberRating = getRating LeastCommon
 
 calcLifeSupportRating :: [Binary] -> Int
 calcLifeSupportRating binaries = B.binToDecimal oxygenGenRating * B.binToDecimal co2ScrubberRating
