@@ -10,7 +10,7 @@ exampleDataFilePath = "data/day2-example.txt"
 
 spec :: Spec
 spec = do
-  commands <- runIO $ parseFileLines parseCommands exampleDataFilePath
+  commands <- runIO $ parseFileLines parseCommand exampleDataFilePath
 
   describe "runCommands" $ do
     it "returns the correct final position" $ do

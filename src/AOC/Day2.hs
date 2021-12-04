@@ -1,6 +1,6 @@
 {-# LANGUAGE RecordWildCards #-}
 
-module AOC.Day2 (Position (..), parseCommands, runCommands, runCommands') where
+module AOC.Day2 (Position (..), runCommands, runCommands', parseCommand) where
 
 import           AOC.Common
 import           Data.Foldable (foldl')
@@ -33,12 +33,10 @@ movePosition Position {..} (Up, amt) = Position posHorizontal (posDepth - amt) 0
 initialPosition :: Position
 initialPosition = Position 0 0 0
 
-parseCommands :: [String] -> Maybe [Command]
-parseCommands = mapM parseCommand
-  where
-    parseCommand txt = case words txt of
-      [dir, amount] -> (,) <$> strToDir dir <*> readMaybe amount
-      _             -> Nothing
+parseCommand :: String -> Maybe Command
+parseCommand txt = case words txt of
+  [dir, amount] -> (,) <$> strToDir dir <*> readMaybe amount
+  _             -> Nothing
 
 runCommands :: [Command] -> Position
 runCommands = foldl' movePosition initialPosition
@@ -57,7 +55,7 @@ runCommands' = foldl' movePositionWithAim initialPosition
 main :: IO ()
 main = do
   putStrLn "Part one:"
-  commands <- parseFileLines parseCommands "data/day2.txt"
+  commands <- parseFileLines parseCommand "data/day2.txt"
   let finalPosition = runCommands $ fromMaybe [] commands
   print finalPosition
   print $ posHorizontal finalPosition * posDepth finalPosition
