@@ -20,6 +20,7 @@ data-files:
     data/day1-example.txt
     data/day1.txt
     data/day2-example.txt
+    data/day2.txt
 
 source-repository head
   type: git

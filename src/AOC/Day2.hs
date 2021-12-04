@@ -1,6 +1,8 @@
 module AOC.Day2 (Position(..), parseCommands, runCommands) where
 
+import           AOC.Common
 import           Data.Foldable (foldl')
+import           Data.Maybe    (fromMaybe)
 import           Text.Read
 
 data Direction = Forward | Down | Up deriving (Eq, Show)
@@ -32,3 +34,11 @@ parseCommands = mapM parseCommand
 
 runCommands :: [Command] -> Position
 runCommands = foldl' movePosition initialPosition
+
+main :: IO ()
+main = do
+  putStrLn "Part one:"
+  commands <- parseFileLines parseCommands "data/day2.txt"
+  let finalPosition = runCommands $ fromMaybe [] commands
+  print finalPosition
+  print $ posHorizontal finalPosition * posDepth finalPosition
