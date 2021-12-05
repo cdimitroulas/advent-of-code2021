@@ -1,8 +1,8 @@
 module AOC.Day3Spec (spec) where
 
 import           AOC.Binary
+import           AOC.Challenge.Day3
 import           AOC.Common
-import           AOC.Day3
 import           Test.Syd
 
 exampleDataFilePath :: String

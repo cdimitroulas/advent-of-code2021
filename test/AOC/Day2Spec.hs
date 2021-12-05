@@ -1,8 +1,8 @@
 module AOC.Day2Spec (spec) where
 
+import           AOC.Challenge.Day2
 import           AOC.Common
-import           AOC.Day2
-import           Data.Maybe (fromMaybe)
+import           Data.Maybe         (fromMaybe)
 import           Test.Syd
 
 exampleDataFilePath :: String

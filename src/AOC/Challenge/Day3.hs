@@ -1,6 +1,6 @@
 {-# LANGUAGE RecordWildCards #-}
 
-module AOC.Day3 (calcPowerConsumption, calcLifeSupportRating) where
+module AOC.Challenge.Day3 (calcPowerConsumption, calcLifeSupportRating) where
 
 import           AOC.Binary    (Binary, Bit (..))
 import qualified AOC.Binary    as B

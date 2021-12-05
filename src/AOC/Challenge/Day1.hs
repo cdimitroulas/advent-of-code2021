@@ -1,4 +1,4 @@
-module AOC.Day1 where
+module AOC.Challenge.Day1 where
 
 import           AOC.Common
 
@@ -6,15 +6,15 @@ dataFilePath :: String
 dataFilePath = "data/day1.txt"
 
 -- Part One
-getDepthIncreases :: [Int] -> Int
-getDepthIncreases = getDepthIncreasesN 1
+day1part1 :: [Int] -> Int
+day1part1 = getDepthIncreasesN 1
 
 -- Part Two
 -- This time we need to look at groups of three values instead of individual values like in
 -- part 1
 
-getDepthIncreases' :: [Int] -> Int
-getDepthIncreases' = getDepthIncreasesN 3
+day1part2 :: [Int] -> Int
+day1part2 = getDepthIncreasesN 3
 
 -- Justin Le interestingly points out that part 2 can be solved in the exact same way as part 1
 -- except that we drop 3 instead of 1.
@@ -31,7 +31,7 @@ main :: IO ()
 main = do
   depths <- readFileLines dataFilePath
   putStrLn "Part One:"
-  print (getDepthIncreases depths)
+  print (day1part1 depths)
 
   putStrLn "Part Two:"
-  print (getDepthIncreases' depths)
+  print (day1part2 depths)

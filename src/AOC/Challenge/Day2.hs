@@ -1,6 +1,6 @@
 {-# LANGUAGE RecordWildCards #-}
 
-module AOC.Day2 (Position (..), runCommands, runCommands', parseCommand) where
+module AOC.Challenge.Day2 (Position (..), runCommands, runCommands', parseCommand) where
 
 import           AOC.Common
 import           Data.Foldable (foldl')

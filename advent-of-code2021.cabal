@@ -32,10 +32,10 @@ library
   exposed-modules:
       AOC
       AOC.Binary
+      AOC.Challenge.Day1
+      AOC.Challenge.Day2
+      AOC.Challenge.Day3
       AOC.Common
-      AOC.Day1
-      AOC.Day2
-      AOC.Day3
       AOC.Matrix
   other-modules:
       Paths_advent_of_code2021
