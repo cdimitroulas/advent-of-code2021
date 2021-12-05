@@ -25,18 +25,10 @@ extra-source-files:
 dependencies:
 - base >= 4.7 && < 5
 - containers
+- text
 
 library:
   source-dirs: src
-  # dependencies:
-  #   - text
-
-# executables:
-#   day1:
-#     source-dirs: src/day1
-#     main: Main.hs
-#     dependencies:
-#       - sydtest >= 0.2.0.0
 
 tests:
   advent-of-code-tests:
