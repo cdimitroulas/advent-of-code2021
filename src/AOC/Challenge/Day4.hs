@@ -5,6 +5,7 @@ module AOC.Challenge.Day4 (day4part1, day4part2, parseInput, mainDay4) where
 import           AOC.Common
 import           AOC.Matrix    (Matrix, Position (..))
 import qualified AOC.Matrix    as Matrix
+import           AOC.Pretty    (mkRed)
 import           Data.Foldable (find, foldl')
 import           Data.Text     (Text)
 import qualified Data.Text     as T
@@ -16,6 +17,9 @@ data Square = Square {squareVal :: Int, squareCalled :: Bool} deriving (Eq)
 
 squareIsCalled :: Square -> Bool
 squareIsCalled = (== True) . squareCalled
+
+markSquare :: Square -> Square
+markSquare Square {..} = Square squareVal True
 
 type Board = Matrix Square
 
@@ -40,7 +44,6 @@ markNumberOnBoard num matrix = case numPosition of
   Nothing  -> matrix
   where
     numPosition = Matrix.findElemPosition ((== num) . squareVal) matrix
-    markSquare Square {..} = Square squareVal True
 
 boardHasBingo :: Board -> Bool
 boardHasBingo board = rowHasBingo board || rowHasBingo (Matrix.invert board)
@@ -109,7 +112,7 @@ parseInput input =
 -- Show instance for Square so we can print it nicely!
 instance Show Square where
   show Square {squareVal = val, squareCalled = False} = showVal val
-  show Square {squareVal = val, squareCalled = True} = "\x1b[31m" <> showVal val <> "\x1b[0m"
+  show Square {squareVal = val, squareCalled = True}  = mkRed(showVal val)
 
 showVal :: Int -> String
 showVal x = if length intAsStr == 2 then intAsStr <> " " else " " <> intAsStr <> " "
