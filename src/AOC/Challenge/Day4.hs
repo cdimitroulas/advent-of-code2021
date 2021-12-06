@@ -1,11 +1,11 @@
 {-# LANGUAGE RecordWildCards #-}
 
-module AOC.Challenge.Day4 where
+module AOC.Challenge.Day4 (day4part1, parseInput, mainDay4) where
 
 import           AOC.Common
-import           AOC.Matrix    (Matrix)
+import           AOC.Matrix    (Matrix, Position (..))
 import qualified AOC.Matrix    as Matrix
-import           Data.Foldable (foldl')
+import           Data.Foldable (find, foldl')
 import           Data.Text     (Text)
 import qualified Data.Text     as T
 import qualified Data.Text.IO  as TIO
@@ -19,19 +19,31 @@ squareIsCalled = (== True) . squareCalled
 
 type Board = Matrix Square
 
----------------- x,  y
-type Position = (Int, Int)
+sumOfUnmarked :: Board -> Int
+sumOfUnmarked board = sum (map sumOfUnmarkedInRow board)
+  where
+    sumOfUnmarkedInRow =
+      foldl'
+        ( \total square ->
+            if not (squareCalled square)
+              then total + squareVal square
+              else total
+        )
+        0
 
 updateBoardPosition :: (Square -> Square) -> Position -> Board -> Board
-updateBoardPosition f (xPos, yPos) = setAt (setAt f xPos) yPos
+updateBoardPosition f Position {..} = setAt (setAt f posX) posY
 
-markNumberOnBoard :: Position -> Board -> Board
-markNumberOnBoard = updateBoardPosition markSquare
+markNumberOnBoard :: Int -> Board -> Board
+markNumberOnBoard num matrix = case numPosition of
+  Just pos -> updateBoardPosition markSquare pos matrix
+  Nothing  -> matrix
   where
+    numPosition = Matrix.findElemPosition ((== num) . squareVal) matrix
     markSquare Square {..} = Square squareVal True
 
 boardHasBingo :: Board -> Bool
-boardHasBingo board = rowHasBingo board && rowHasBingo (Matrix.invert board)
+boardHasBingo board = rowHasBingo board || rowHasBingo (Matrix.invert board)
   where
     rowHasBingo =
       any
@@ -40,13 +52,18 @@ boardHasBingo board = rowHasBingo board && rowHasBingo (Matrix.invert board)
         )
 
 day4part1 :: [Board] -> [Int] -> Int
-day4part1 boards bingoNumbers = error "not implemented"
+day4part1 _ [] = error "no bingo numbers provided or no board won the bingo game"
+day4part1 boards (num : nums) = case boardWithBingo of
+  Just board -> sumOfUnmarked board * num
+  Nothing    -> day4part1 updatedBoards nums
+  where
+    boardWithBingo = find boardHasBingo updatedBoards
+    updatedBoards = map (markNumberOnBoard num) boards
 
 mainDay4 :: IO ()
 mainDay4 = do
-  (bingoNumbers, boards) <- parseInput <$> TIO.readFile "data/day4-example.txt"
+  (bingoNumbers, boards) <- parseInput <$> TIO.readFile "data/day4.txt"
   putStrLn "Day 4 Part one:"
-  putStrLn (Matrix.prettyPrint (head boards))
   print $ day4part1 boards bingoNumbers
 
 -- Parsing the input is different to the previous puzzles. We have a first line which is the

@@ -57,3 +57,18 @@ spec = do
             [5, 6, 8, 8],
             [9, 10, 12, 12]
           ]
+
+  describe "findElemPosition" $ do
+    it "returns the correct position if the element exists in the matrix" $ do
+        findElemPosition (== 10) ([
+          [1, 2, 3, 4],
+          [5, 6, 7, 8],
+          [9, 10, 11, 12]
+          ] :: Matrix Integer) `shouldBe` Just (Position 1 2)
+
+    it "returns Nothing if the element doesn't exist in the matrix" $ do
+        findElemPosition (== 99) ([
+          [1, 2, 3, 4],
+          [5, 6, 7, 8],
+          [9, 10, 11, 12]
+          ] :: Matrix Integer) `shouldBe` Nothing

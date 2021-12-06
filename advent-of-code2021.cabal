@@ -24,6 +24,7 @@ data-files:
     data/day3-example.txt
     data/day3.txt
     data/day4-example.txt
+    data/day4.txt
 
 source-repository head
   type: git
@@ -58,6 +59,7 @@ test-suite advent-of-code-tests
       AOC.Day1Spec
       AOC.Day2Spec
       AOC.Day3Spec
+      AOC.Day4Spec
       AOC.MatrixSpec
       Paths_advent_of_code2021
   hs-source-dirs:
