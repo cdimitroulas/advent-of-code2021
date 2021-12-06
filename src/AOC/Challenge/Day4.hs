@@ -1,6 +1,6 @@
 {-# LANGUAGE RecordWildCards #-}
 
-module AOC.Challenge.Day4 (day4part1, parseInput, mainDay4) where
+module AOC.Challenge.Day4 (day4part1, day4part2, parseInput, mainDay4) where
 
 import           AOC.Common
 import           AOC.Matrix    (Matrix, Position (..))
@@ -60,11 +60,27 @@ day4part1 boards (num : nums) = case boardWithBingo of
     boardWithBingo = find boardHasBingo updatedBoards
     updatedBoards = map (markNumberOnBoard num) boards
 
+day4part2 :: [Board] -> [Int] -> Maybe Int
+day4part2 _ [] = error "no bingo numbers provided or no board won the bingo game"
+day4part2 boards (num : nums) = if allBoardsHaveBingo
+  -- We find the board which does not have bingo using the `boards` variable rather than
+  -- updatedBoards as the last board to win will be the only one without Bingo at this point.
+  -- We must remember to subtract the last bingo number from the sum of unmarked to get the
+  -- right total at this point as well.
+  then (* num) . subtract num . sumOfUnmarked <$> find (not . boardHasBingo) boards
+  else day4part2 updatedBoards nums
+  where
+    allBoardsHaveBingo = all boardHasBingo updatedBoards
+    updatedBoards = map (markNumberOnBoard num) boards
+
 mainDay4 :: IO ()
 mainDay4 = do
   (bingoNumbers, boards) <- parseInput <$> TIO.readFile "data/day4.txt"
   putStrLn "Day 4 Part one:"
   print $ day4part1 boards bingoNumbers
+
+  putStrLn "Day 4 Part two:"
+  print $ day4part2 boards bingoNumbers
 
 -- Parsing the input is different to the previous puzzles. We have a first line which is the
 -- bingo numbers that are called. There is a line of whitespace after this.
