@@ -15,36 +15,31 @@ isVerticalLine :: Line -> Bool
 isVerticalLine
   Line {lineStart = Point {pointX = x1}, lineEnd = Point {pointX = x2}} = x1 == x2
 
-pointIsOnLine :: Point -> Line -> Bool
-pointIsOnLine p line
-  | isVerticalLine line =
-    pointX p == (pointX . lineStart) line
-      && pointX p >= (pointX . lineStart) line
-      && pointX p <= (pointX . lineEnd) line
-  | isHorizontalLine line = pointY p == (pointY . lineStart) line
-      && pointY p >= (pointY . lineStart) line
-      && pointY p <= (pointY . lineEnd) line
-  | otherwise =
-    pointY p == slope * pointX p + intercept
-      && pointX p >= x1
-      && pointX p <= x2
-      && pointY p >= y1
-      && pointY p <= y2
-  where
-    intercept = y1 - slope * x1
-    slope = (y2 - y1) `div` (x2 - x1)
-    x1 = (pointX . lineStart) line
-    x2 = (pointX . lineEnd) line
-    y1 = (pointY . lineStart) line
-    y2 = (pointY . lineEnd) line
-
 -- Given a line returns the discrete list of points which sit along that line
+-- Assumes horizontal, vertical and 45 degree diagonal lines only.
 toDiscretePoints :: Line -> [Point]
-toDiscretePoints line@Line {lineStart = p1, lineEnd = p2} =
-  [ Point x y
-    | -- decreasing range doesn't work with two values like [9..0], it returns []
-      -- So we need to check which value is greater and construct the range appropriately
-      x <- if pointX p1 < pointX p2 then [pointX p1 .. pointX p2] else [pointX p2 .. pointX p1],
-      y <- if pointY p1 < pointY p2 then [pointY p1 .. pointY p2] else [pointY p2 .. pointY p1],
-      pointIsOnLine (Point x y) line
-  ]
+toDiscretePoints line@Line {lineStart = p1, lineEnd = p2}
+  | p1 == p2 = [p2]
+
+  | isHorizontalLine line =
+      p1 : toDiscretePoints
+        (Line
+          (Point (pointX p1 + xIncreaseFactor) (pointY p1))
+          p2)
+
+  | isVerticalLine line =
+      p1 : toDiscretePoints
+        (Line
+          (Point (pointX p1) (pointY p1 + yIncreaseFactor))
+          p2)
+
+  -- Assumes a 45 degree horizontal line
+  | otherwise =
+      p1: toDiscretePoints
+        (Line
+          (Point (pointX p1 + xIncreaseFactor) (pointY p1 + yIncreaseFactor))
+          p2)
+
+    where
+      xIncreaseFactor = if pointX p1 < pointX p2 then 1 else -1
+      yIncreaseFactor = if pointY p1 < pointY p2 then 1 else -1
