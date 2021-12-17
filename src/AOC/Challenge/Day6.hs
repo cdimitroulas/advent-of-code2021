@@ -51,20 +51,21 @@ day6part1 = run 0
 
 -- A new fish generation is represented by the day of birth and number of new fish.
 type Generation = Map DaysTillNextBirth Count
+
 type DaysTillNextBirth = Int
+
 type Count = Integer
 
-emptyGeneration :: Map Int Integer
-emptyGeneration = M.fromList $ map (,0) [0 .. 8]
-
 makeGeneration :: [Fish] -> Generation
-makeGeneration fish = run fish emptyGeneration
-  where
-    run [] m       = m
-    run (x : xs) m = run xs (M.insertWith (+) (coerce x) 1 m)
+makeGeneration = foldr (\fish -> M.insertWith (+) (unFish fish) 1) M.empty
 
 nextGeneration :: Generation -> Generation
-nextGeneration gen = (M.delete (-1) . M.insertWith (+) 6 births . M.insertWith (+) 8 births) newGen
+nextGeneration gen =
+  ( M.delete (-1)
+      . M.insertWith (+) 6 births
+      . M.insertWith (+) 8 births
+  )
+    newGen
   where
     newGen = M.mapKeys (subtract 1) gen
     -- the number of births is equal to the number of fish which are at the -1 key
