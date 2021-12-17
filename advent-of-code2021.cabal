@@ -27,6 +27,8 @@ data-files:
     data/day4.txt
     data/day5-example.txt
     data/day5.txt
+    data/day6-example.txt
+    data/day6.txt
 
 source-repository head
   type: git
@@ -41,6 +43,7 @@ library
       AOC.Challenge.Day3
       AOC.Challenge.Day4
       AOC.Challenge.Day5
+      AOC.Challenge.Day6
       AOC.Common
       AOC.Matrix
       AOC.Point
