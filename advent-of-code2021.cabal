@@ -31,6 +31,8 @@ data-files:
     data/day6.txt
     data/day7-example.txt
     data/day7.txt
+    data/day8-example.txt
+    data/day8.txt
 
 source-repository head
   type: git
@@ -47,6 +49,7 @@ library
       AOC.Challenge.Day5
       AOC.Challenge.Day6
       AOC.Challenge.Day7
+      AOC.Challenge.Day8
       AOC.Common
       AOC.Matrix
       AOC.Point
@@ -74,6 +77,7 @@ test-suite advent-of-code-tests
       AOC.Day4Spec
       AOC.Day5Spec
       AOC.Day7Spec
+      AOC.Day8Spec
       AOC.MatrixSpec
       AOC.PointSpec
       Paths_advent_of_code2021

@@ -1,5 +1,3 @@
-{-# LANGUAGE OverloadedStrings #-}
-
 module AOC.Challenge.Day7 where
 
 import           Data.Attoparsec.Text (Parser)
